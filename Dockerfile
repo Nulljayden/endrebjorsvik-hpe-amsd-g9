@@ -21,11 +21,13 @@ ADD mcp.sources /etc/apt/sources.list.d/
 RUN apt-get update && apt-get install -y amsd hponcfg storcli ssa ssacli ssaducli && apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN apt-get update && apt-get install -y --no-install-recommends --no-install-suggests python3 && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN curl -LO "https://github.com/gdraheim/docker-systemctl-replacement/archive/refs/tags/v1.5.9063.tar.gz"
-RUN tar -xvf "v1.5.9063.tar.gz"
-RUN cp /docker-systemctl-replacement-1.5.9063/files/docker/* /usr/bin/
-RUN ln -s "/usr/bin/systemctl3.py" "/usr/bin/systemctl"
-RUN chmod +x "/usr/bin/systemctl3.py" "/usr/bin/journalctl3.py"
+RUN curl -LO "https://github.com/gdraheim/docker-systemctl-replacement/archive/refs/tags/v1.5.9063.tar.gz" && \
+    echo "6443af6db2930ed13b68d82c276f2abf9b04e02a70723cb68e4d804dc4db2887  v1.5.9063.tar.gz" | sha256sum -c && \
+    tar -xvf "v1.5.9063.tar.gz" && \
+    rm v1.5.9063.tar.gz && \
+    cp /docker-systemctl-replacement-1.5.9063/files/docker/* /usr/bin/ && \
+    ln -s "/usr/bin/systemctl3.py" "/usr/bin/systemctl" && \
+    chmod +x "/usr/bin/systemctl3.py" "/usr/bin/journalctl3.py"
 
 RUN mkdir -p /etc/sysconfig
 # Ensure that all services log to stdout instead of file.
